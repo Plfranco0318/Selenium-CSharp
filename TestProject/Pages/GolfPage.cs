@@ -78,7 +78,7 @@ namespace TestProject.Pages
 
         public void Search(string searchStr)
         {
-            string moduleName = "Golf_Search";
+            string moduleName = "Search_Golf_Search";
             ReportHelper.InitializeReport(moduleName);
             ReportHelper.test.Info(moduleName);
 
@@ -88,22 +88,23 @@ namespace TestProject.Pages
                 SearchTxt.SendKeys(searchStr);
                 
                 SearchBtn.Click();
-                ReportHelper.LogPass("Search For Golf Course");
+                ReportHelper.LogPass("Successfully searched for a golf course.");
             
 
             }catch(NoSuchElementException e)
             {
-                ReportHelper.LogFail("Search For Golf Course" + e.Message);
+                ReportHelper.LogFail("Search failed:" + e.Message);
                 TakeScreenshot(moduleName);
-                test.AddScreenCaptureFromPath(ReportHelper.ScreenshotPath);
+                ReportHelper.AddScreenShot(ReportHelper.ScreenshotPath);
                 ReportHelper.FinalizeReport();
+
             }
 
             try
             {
                 Assert.Multiple(() =>
                 {
-                    Assert.That(ColumnName.Text, Is.EqualTo("Name ^"));
+                    Assert.That(ColumnName.Text, Is.EqualTo("Name fdafsasd^"));
                     Assert.That(ColumnAddress.Text, Is.EqualTo("Address"));
                     Assert.That(ColumnDesc.Text, Is.EqualTo("Description"));
                     Assert.That(ColumnContent.Displayed, Is.True);
@@ -114,7 +115,7 @@ namespace TestProject.Pages
             {
                 ReportHelper.LogFail("Validate Golf table");
                 TakeScreenshot(moduleName);
-                test.AddScreenCaptureFromPath(ReportHelper.ScreenshotPath);
+                ReportHelper.AddScreenShot(ReportHelper.ScreenshotPath);
                 ReportHelper.FinalizeReport();
             }
         }
