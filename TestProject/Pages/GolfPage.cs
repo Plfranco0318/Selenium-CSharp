@@ -1,7 +1,6 @@
-﻿using AventStack.ExtentReports;
-using AventStack.ExtentReports.Reporter;
-using OpenQA.Selenium;
+﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
+using TestProject.Helpers;
 
 
 namespace TestProject.Pages
@@ -9,8 +8,6 @@ namespace TestProject.Pages
     public class GolfPage
     {
         private IWebDriver _driver;
-        public static ExtentTest test;
-        public static ExtentReports extent;
 
 
         private IWebElement SearchTxt => _driver.FindElement(By.Name("SearchString"));
@@ -81,14 +78,9 @@ namespace TestProject.Pages
 
         public void Search(string searchStr)
         {
-            string screensh = @"C:\Users\Paul Franco II\source\repos\TestProject\TestProject\Screenshots\" + "Golf" + DateTime.Now.ToString("_MMddyyyy_hhmmt") + ".png";
-            var extent = new ExtentReports();
-            var spark = new ExtentSparkReporter(@"C:\Users\Paul Franco II\source\repos\TestProject\TestProject\Reports\" + "Golf" + DateTime.Now.ToString("_MMddyyyy_hhmmt") + ".html");
-            extent.AttachReporter(spark);
-
-            var test = extent.CreateTest("SearchTest");
-            test.Info("Starting search for Golf Course ");
-            extent.Flush();
+            string moduleName = "Golf_Search";
+            ReportHelper.InitializeReport(moduleName);
+            ReportHelper.test.Info(moduleName);
 
             try
             {
@@ -96,14 +88,15 @@ namespace TestProject.Pages
                 SearchTxt.SendKeys(searchStr);
                 
                 SearchBtn.Click();
-                test.Pass("Search for Golf Course");
-                extent.Flush();
+                ReportHelper.LogPass("Search For Golf Course");
+            
+
             }catch(NoSuchElementException e)
             {
-                test.Fail("Search for Golf Course");
-                TakeScreenshot("Golf");
-                test.AddScreenCaptureFromPath(screensh);
-                extent.Flush();
+                ReportHelper.LogFail("Search For Golf Course" + e.Message);
+                TakeScreenshot(moduleName);
+                test.AddScreenCaptureFromPath(ReportHelper.ScreenshotPath);
+                ReportHelper.FinalizeReport();
             }
 
             try
@@ -114,15 +107,15 @@ namespace TestProject.Pages
                     Assert.That(ColumnAddress.Text, Is.EqualTo("Address"));
                     Assert.That(ColumnDesc.Text, Is.EqualTo("Description"));
                     Assert.That(ColumnContent.Displayed, Is.True);
-                    test.Pass("Validate Golf Table");
-                    extent.Flush();
+                    ReportHelper.LogPass("Validate Golf Table");
+                
                 });
             }catch(Exception e)
             {
-                test.Fail("Validate Golf table");
-                TakeScreenshot("Golf");
-                test.AddScreenCaptureFromPath(screensh);
-                extent.Flush();
+                ReportHelper.LogFail("Validate Golf table");
+                TakeScreenshot(moduleName);
+                test.AddScreenCaptureFromPath(ReportHelper.ScreenshotPath);
+                ReportHelper.FinalizeReport();
             }
         }
 
