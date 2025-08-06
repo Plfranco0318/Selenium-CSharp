@@ -1,13 +1,6 @@
-﻿using NUnit.Framework;
-using OpenQA.Selenium;
+﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
-using System;
-using PageObjectModel.Source.Pages;
-using System.Configuration;
-using OpenQA.Selenium.Firefox;
 using TestProject.Pages;
-using AventStack.ExtentReports.Reporter;
-using AventStack.ExtentReports;
 
 //using OpenQA.Selenium.Edge;
 
@@ -37,7 +30,7 @@ namespace TestProject
 
             try
             {
-                g.search("Sky Golf Course");
+                g.Search("Sky Golf Course");
             }catch (NoSuchElementException e)
             {
                 g.TakeScreenshot("golf");
@@ -51,7 +44,7 @@ namespace TestProject
             _driver.Navigate().GoToUrl(TestContext.Parameters["golf_url"]);
             GolfPage g = new GolfPage(_driver);
 
-            g.select("Sweden");
+            g.Select("Sweden");
         }
 
         [Test]
@@ -60,7 +53,7 @@ namespace TestProject
             _driver.Navigate().GoToUrl(TestContext.Parameters["golf_url"]);
             GolfPage g = new GolfPage(_driver);
 
-            g.addGolfCourse();
+            g.AddGolfCourse();
         }
 
         [Test]
@@ -69,7 +62,7 @@ namespace TestProject
             _driver.Navigate().GoToUrl(TestContext.Parameters["golf_url"]);
             GolfPage g = new GolfPage(_driver);
 
-            g.editGolfCourse();
+            g.EditGolfCourse();
         }
 
         [Test]
@@ -78,7 +71,16 @@ namespace TestProject
             _driver.Navigate().GoToUrl(TestContext.Parameters["golf_url"]);
             GolfPage g = new GolfPage(_driver);
 
-            g.deleteGolfCourse();
-        } }
+            g.DeleteGolfCourse();
+        }
 
+        [TearDown]
+        public void Teardown()
+        {
+            _driver?.Quit();
+            _driver?.Dispose();
+        }
+                 
     }
+
+}

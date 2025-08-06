@@ -1,10 +1,7 @@
-using NUnit.Framework;
+using NUnit.Framework.Internal;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
-using System;
 using PageObjectModel.Source.Pages;
-using System.Configuration;
-using NUnit.Framework.Internal;
 
 
 
@@ -31,6 +28,13 @@ namespace TestProject
 
             _driver.Navigate().GoToUrl(TestContext.Parameters["login_url"]);
             lg.login(User, Password);
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            _driver?.Quit();
+            _driver?.Dispose();
         }
 
     }

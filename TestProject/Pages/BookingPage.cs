@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using OpenQA.Selenium;
+﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
-using SeleniumExtras.PageObjects;
 
 
 namespace PageObjectModel.Source.Pages
@@ -14,34 +8,29 @@ namespace PageObjectModel.Source.Pages
     {
         private IWebDriver _driver;
 
-        [FindsBy(How = How.XPath, Using = "/html/body/div/main/table[1]/tbody/tr/td[4]/form/button")]
-        private IWebElement BookingBtn;
+        private IWebElement BookingBtn => _driver.FindElement(By.XPath("/html/body/div/main/table[1]/tbody/tr/td[4]/form/button"));
 
-        [FindsBy(How = How.Id, Using = "GolfName")]
-        private IWebElement GolfNameSelect;
+        private IWebElement GolfNameSelect => _driver.FindElement(By.Id("GolfName"));
 
-        [FindsBy(How = How.Id, Using = "Customer")]
-        private IWebElement CustomerTxt;
+        private IWebElement CustomerTxt => _driver.FindElement(By.Id("Customer"));
 
-        [FindsBy(How = How.Id, Using = "Email")]
-        private IWebElement EmailTxt;
+        private IWebElement EmailTxt => _driver.FindElement(By.Id("Email"));
 
-        [FindsBy(How = How.Id, Using = "Phone")]
-        private IWebElement PhoneTxt;
+        private IWebElement PhoneTxt => _driver.FindElement(By.Id("Phone"));
 
-        [FindsBy(How = How.Id, Using = "Date")]
-        private IWebElement DateTxt;
+        private IWebElement DateTxt => _driver.FindElement(By.Id("Date"));
 
-        [FindsBy(How = How.Id, Using = "StartTime")]
-        private IWebElement StartTimeTxt;
+        private IWebElement StartTimeTxt => _driver.FindElement(By.Id("StartTime"));
 
-        [FindsBy(How = How.Id, Using = "EndTime")]
-        private IWebElement EndTimeTxt;
+        private IWebElement EndTimeTxt => _driver.FindElement(By.Id("EndTime"));
 
-        [FindsBy(How = How.XPath, Using = "/html/body/div/main/div[1]/div/form/div[8]/input")]
-        private IWebElement CreateBtn;
+        private IWebElement CreateBtn => _driver.FindElement(By.XPath("/html/body/div/main/div[1]/div/form/div[8]/input"));
 
-        public BookingPage(IWebDriver driver) { _driver = driver; PageFactory.InitElements(_driver, this); }
+        public BookingPage(IWebDriver driver)
+        {
+            _driver = driver;
+        }
+
 
         public void Booking()
         {

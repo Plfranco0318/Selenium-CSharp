@@ -1,17 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using NUnit.Framework.Interfaces;
+﻿using AventStack.ExtentReports;
+using AventStack.ExtentReports.Reporter;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
-using SeleniumExtras.PageObjects;
-
-
-using AventStack.ExtentReports.Reporter;
-using AventStack.ExtentReports;
-using AventStack.ExtentReports.MarkupUtils;
 
 
 namespace TestProject.Pages
@@ -23,100 +13,73 @@ namespace TestProject.Pages
         public static ExtentReports extent;
 
 
-        [FindsBy(How = How.Name, Using = "SearchString")]
-        private IWebElement searchTxt;
+        private IWebElement SearchTxt => _driver.FindElement(By.Name("SearchString"));
+
+        private IWebElement SearchBtn => _driver.FindElement(By.XPath("/html/body/div/main/table[1]/tbody/tr/td[1]/form/button"));
+
+        private IWebElement ColumnName => _driver.FindElement(By.XPath("/html/body/div/main/table[2]/thead/tr/th[1]"));
+
+        private IWebElement ColumnAddress => _driver.FindElement(By.XPath("/html/body/div/main/table[2]/thead/tr/th[2]"));
+
+        private IWebElement ColumnDesc => _driver.FindElement(By.XPath("/html/body/div/main/table[2]/thead/tr/th[3]"));
         
-        [FindsBy(How = How.XPath, Using = "/html/body/div/main/table[1]/tbody/tr/td[1]/form/button")]
-        private IWebElement searchBtn;
+        private IWebElement ColumnName_1 => _driver.FindElement(By.XPath("/html/body/div/main/table[2]/tbody/tr/td[1]"));
 
-        [FindsBy(How = How.XPath, Using = "/html/body/div/main/table[2]/thead/tr/th[1]")]
-        private IWebElement columnName;
+        private IWebElement ColumnContent => _driver.FindElement(By.XPath("/html/body/div/main/table[2]/tbody/tr"));
 
-        [FindsBy(How = How.XPath, Using = "/html/body/div/main/table[2]/thead/tr/th[2]")]
-        private IWebElement columnAddress;
+        private IWebElement SelectCountry => _driver.FindElement(By.ClassName("select"));
 
-        [FindsBy(How = How.XPath, Using = "/html/body/div/main/table[2]/thead/tr/th[3]")]
-        private IWebElement columnDesc;
+        private IWebElement Address_1 => _driver.FindElement(By.XPath("/html/body/div/main/table[2]/tbody/tr[1]/td[2]"));
 
-        [FindsBy(How = How.XPath, Using = "/html/body/div/main/table[2]/tbody/tr/td[1]")]  
-        private IWebElement columnName_1;
+        private IWebElement FilterBtn => _driver.FindElement(By.XPath("/html/body/div/main/table[1]/tbody/tr/td[2]/form/fieldset/button"));
 
-        [FindsBy(How = How.XPath, Using = "/html/body/div/main/table[2]/tbody/tr")]
-        private IWebElement column_content;
+        private IWebElement AddGolf => _driver.FindElement(By.XPath("/html/body/div/main/table[1]/tbody/tr/td[5]/form/button"));
 
-        [FindsBy(How = How.ClassName, Using = "select")]
-        private IWebElement selectCountry;
+        private IWebElement Name => _driver.FindElement(By.Id("Name"));
+        
+        private IWebElement Address => _driver.FindElement(By.Id("Address"));
 
-        [FindsBy(How = How.XPath, Using = "/html/body/div/main/table[2]/tbody/tr[1]/td[2]")]
-        private IWebElement address_1;
+        private IWebElement City => _driver.FindElement(By.Id("City"));
 
-        [FindsBy(How = How.XPath, Using = "/html/body/div/main/table[1]/tbody/tr/td[2]/form/fieldset/button")]
-        private IWebElement filter_btn;
+        private IWebElement Province => _driver.FindElement(By.Id("Province"));
 
-        [FindsBy(How = How.XPath, Using = "/html/body/div/main/table[1]/tbody/tr/td[5]/form/button")]
-        private IWebElement addGolf;
+        private IWebElement Country => _driver.FindElement(By.Id("Country"));
 
-        [FindsBy(How = How.Id, Using = "Name")]
-        private IWebElement Name;
+        private IWebElement Description => _driver.FindElement(By.Id("Description"));
 
-        [FindsBy(How = How.Id, Using = "Address")]
-        private IWebElement Address;
+        private IWebElement LongDesc => _driver.FindElement(By.Id("LongDes"));
 
-        [FindsBy(How = How.Id, Using = "City")]
-        private IWebElement City;
+        private IWebElement Owner => _driver.FindElement(By.Id("Owner"));
 
-        [FindsBy(How = How.Id, Using = "Province")]
-        private IWebElement Province;
+        private IWebElement Email => _driver.FindElement(By.Id("Email"));
 
-        [FindsBy(How = How.Id, Using = "Country")]
-        private IWebElement Country;
+        private IWebElement PhoneNumber => _driver.FindElement(By.Id("PhoneNumber"));
 
-        [FindsBy(How = How.Id, Using = "Description")]
-        private IWebElement Description;
+        private IWebElement CreateBtn => _driver.FindElement(By.XPath("/html/body/div/main/div[1]/div--/form/div[14]/input")); 
 
-        [FindsBy(How = How.Id, Using = "LongDes")]
-        private IWebElement LongDes;
+        private IWebElement LoginEmail => _driver.FindElement(By.Id("Input_Email"));
 
-        [FindsBy(How = How.Id, Using = "Owner")]
-        private IWebElement Owner;
+        private IWebElement LoginPassword => _driver.FindElement(By.Id("Input_Password"));
 
-        [FindsBy(How = How.Id, Using = "Email")]
-        private IWebElement Email;
+        private IWebElement LoginSubmit => _driver.FindElement(By.Id("login-submit"));
 
-        [FindsBy(How = How.Id, Using = "PhoneNumber")]
-        private IWebElement PhoneNumber;
+        private IWebElement LoginLink => _driver.FindElement(By.XPath("/html/body/header/nav/ul/li/a"));
 
-        [FindsBy(How = How.XPath, Using = "/html/body/div/main/div[1]/div--/form/div[14]/input")]
-        private IWebElement CreateBtn;
+        private IWebElement EditLink => _driver.FindElement(By.XPath("/html/body/div/main/table[2]/tbody/tr[1]/td[6]/a[2]"));
 
-        [FindsBy(How = How.Id, Using = "Input_Email")]
-        private IWebElement login_email;
+        private IWebElement EditSaveBtn => _driver.FindElement(By.XPath("/html/body/div/main/div[1]/div/form/div[11]/input"));
 
-        [FindsBy(How = How.Id, Using = "Input_Password")]
-        private IWebElement login_password;
+        private IWebElement DeleteLink => _driver.FindElement(By.XPath("/html/body/div/main/table[2]/tbody/tr/td[6]/a[3]"));
 
-        [FindsBy(How = How.Id, Using = "login-submit" )]
-        private IWebElement loginBtn;
+        private IWebElement DeleteSaveBtn => _driver.FindElement(By.XPath("/html/body/div/main/div/form/input[2]"));
 
-        [FindsBy(How = How.XPath, Using = "/html/body/header/nav/ul/li/a")]
-        private IWebElement loginLink;
+        public GolfPage(IWebDriver driver)
+        {
+            _driver = driver;
+        }
+  
 
-        [FindsBy(How = How.XPath, Using = "/html/body/div/main/table[2]/tbody/tr[1]/td[6]/a[2]")]
-        private IWebElement editLink;
-
-        [FindsBy(How = How.XPath, Using = "/html/body/div/main/div[1]/div/form/div[11]/input")]
-        private IWebElement editSavebtn;
-
-        [FindsBy(How = How.XPath, Using = "/html/body/div/main/table[2]/tbody/tr/td[6]/a[3]")]
-        private IWebElement deleteLink;
-
-        [FindsBy(How = How.XPath, Using = "/html/body/div/main/div/form/input[2]")]
-        private IWebElement deleteSaveBtn;
-        public GolfPage(IWebDriver driver) { _driver = driver; PageFactory.InitElements(driver, this); }
-
-
-
-        public void search(string searchStr)
+        public void Search(string searchStr)
         {
             string screensh = @"C:\Users\Paul Franco II\source\repos\TestProject\TestProject\Screenshots\" + "Golf" + DateTime.Now.ToString("_MMddyyyy_hhmmt") + ".png";
             var extent = new ExtentReports();
@@ -129,10 +92,10 @@ namespace TestProject.Pages
 
             try
             {
-                searchTxt.Clear();
-                searchTxt.SendKeys(searchStr);
+                SearchTxt.Clear();
+                SearchTxt.SendKeys(searchStr);
                 
-                searchBtn.Click();
+                SearchBtn.Click();
                 test.Pass("Search for Golf Course");
                 extent.Flush();
             }catch(NoSuchElementException e)
@@ -147,10 +110,10 @@ namespace TestProject.Pages
             {
                 Assert.Multiple(() =>
                 {
-                    Assert.That(columnName.Text, Is.EqualTo("Name ^"));
-                    Assert.That(columnAddress.Text, Is.EqualTo("Address"));
-                    Assert.That(columnDesc.Text, Is.EqualTo("Description"));
-                    Assert.That(column_content.Displayed, Is.True);
+                    Assert.That(ColumnName.Text, Is.EqualTo("Name ^"));
+                    Assert.That(ColumnAddress.Text, Is.EqualTo("Address"));
+                    Assert.That(ColumnDesc.Text, Is.EqualTo("Description"));
+                    Assert.That(ColumnContent.Displayed, Is.True);
                     test.Pass("Validate Golf Table");
                     extent.Flush();
                 });
@@ -163,33 +126,33 @@ namespace TestProject.Pages
             }
         }
 
-        public void select(string country)
+        public void Select(string country)
         {
-            var selectElement = selectCountry;
+            var selectElement = SelectCountry;
             var select = new SelectElement(selectElement);
             select.SelectByText(country);
 
-            filter_btn.Click();
+            FilterBtn.Click();
 
             Assert.Multiple(() =>
             {
-                Assert.That(columnName.Text, Is.EqualTo("Name ^"));
-                Assert.That(columnAddress.Text, Is.EqualTo("Address"));
-                Assert.That(columnDesc.Text, Is.EqualTo("Description"));
-                Assert.That(address_1.Text, Contains.Substring(country));
+                Assert.That(ColumnName.Text, Is.EqualTo("Name ^"));
+                Assert.That(ColumnAddress.Text, Is.EqualTo("Address"));
+                Assert.That(ColumnDesc.Text, Is.EqualTo("Description"));
+                Assert.That(Address_1.Text, Contains.Substring(country));
             });
         }
 
-        public void addGolfCourse()
+        public void AddGolfCourse()
         {
-            addGolf.Click();
+            AddGolf.Click();
 
             string? User = TestContext.Parameters["user"];
             string? Password = TestContext.Parameters["password"];
 
-            login_email.SendKeys(User);
-            login_password.SendKeys(Password);  
-            loginBtn.Click();
+            LoginEmail.SendKeys(User);
+            LoginPassword.SendKeys(Password);  
+            LoginSubmit.Click();
 
             Thread.Sleep(4000);
 
@@ -199,7 +162,7 @@ namespace TestProject.Pages
             Province.SendKeys("AB");
             Country.SendKeys("Canada");
             Description.SendKeys("It's a nice golf course.");
-            LongDes.SendKeys("It's located in NW Edmonton. Its country style and full services.");
+            LongDesc.SendKeys("It's located in NW Edmonton. Its country style and full services.");
             Owner.SendKeys("Daniel Longbottom");
             Email.SendKeys("test2@admlucid.com");
             PhoneNumber.SendKeys("09266663456");
@@ -208,50 +171,50 @@ namespace TestProject.Pages
 
         }
 
-        public void editGolfCourse()
+        public void EditGolfCourse()
         {
-            loginLink.Click();
+            LoginLink.Click();
 
             string? User = TestContext.Parameters["user"];
             string? Password = TestContext.Parameters["password"];
 
-            login_email.SendKeys(User);
-            login_password.SendKeys(Password);
-            loginBtn.Click();
+            LoginEmail.SendKeys(User);
+            LoginPassword.SendKeys(Password);
+            LoginSubmit.Click();
 
             Thread.Sleep(4000);
 
             _driver.Navigate().GoToUrl(TestContext.Parameters["golf_url"]);
             Thread.Sleep(2000);
 
-            searchTxt.SendKeys("Testing Golf Course A");
-            searchBtn.Click();
+            SearchTxt.SendKeys("Testing Golf Course A");
+            SearchBtn.Click();
 
-            editLink.Click();
-            Owner.Clear(); Owner.SendKeys("Johnny Batongbakal"); editSavebtn.Click();
+            EditLink.Click();
+            Owner.Clear(); Owner.SendKeys("Johnny Batongbakal"); EditSaveBtn.Click();
         }
 
 
-        public void deleteGolfCourse()
+        public void DeleteGolfCourse()
         {
-            loginLink.Click();
+            LoginLink.Click();
 
             string? User = TestContext.Parameters["user"];
             string? Password = TestContext.Parameters["password"];
 
-            login_email.SendKeys(User); 
-            login_password.SendKeys(Password); 
-            loginBtn.Click();
+            LoginEmail.SendKeys(User); 
+            LoginPassword.SendKeys(Password); 
+            LoginSubmit.Click();
 
             Thread.Sleep(4000);
 
             _driver.Navigate().GoToUrl(TestContext.Parameters["golf_url"]); 
             Thread.Sleep(2000);
-            searchTxt.SendKeys("Testing Golf Course A"); 
-            searchBtn.Click();
+            SearchTxt.SendKeys("Testing Golf Course A"); 
+            SearchBtn.Click();
            
-            deleteLink.Click(); 
-            deleteSaveBtn.Click(); 
+            DeleteLink.Click(); 
+            DeleteSaveBtn.Click(); 
             Thread.Sleep(2000);
         }
 

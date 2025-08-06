@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using NUnit.Framework.Internal;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
-using NUnit.Framework.Internal;
 using PageObjectModel.Source.Pages;
 
 
@@ -33,7 +28,8 @@ namespace TestProject
         [TearDown]
         public void TearDown()
         {
-            _driver.Close();
+            _driver?.Close();
+            _driver?.Dispose();
         }
 
     }
