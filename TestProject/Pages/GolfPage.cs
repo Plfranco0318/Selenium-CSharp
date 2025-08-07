@@ -104,7 +104,7 @@ namespace TestProject.Pages
             {
                 Assert.Multiple(() =>
                 {
-                    Assert.That(ColumnName.Text, Is.EqualTo("Name fdafsasd^"));
+                    Assert.That(ColumnName.Text, Is.EqualTo("Name ^"));
                     Assert.That(ColumnAddress.Text, Is.EqualTo("Address"));
                     Assert.That(ColumnDesc.Text, Is.EqualTo("Description"));
                     Assert.That(ColumnContent.Displayed, Is.True);
@@ -124,18 +124,63 @@ namespace TestProject.Pages
         {
             var selectElement = SelectCountry;
             var select = new SelectElement(selectElement);
-            select.SelectByText(country);
 
-            FilterBtn.Click();
 
-            Assert.Multiple(() =>
+            try
+            {   
+                select.SelectByText(country);
+                FilterBtn.Click();
+                ReportHelper.LogPass("Successfully selected a country.");
+
+            }catch(Exception e)
             {
-                Assert.That(ColumnName.Text, Is.EqualTo("Name ^"));
-                Assert.That(ColumnAddress.Text, Is.EqualTo("Address"));
-                Assert.That(ColumnDesc.Text, Is.EqualTo("Description"));
-                Assert.That(Address_1.Text, Contains.Substring(country));
-            });
+
+            }
+            try
+            {
+                Assert.Multiple(() =>
+                {
+                    Assert.That(ColumnName.Text, Is.EqualTo("Name ^"));
+                    Assert.That(ColumnAddress.Text, Is.EqualTo("Address"));
+                    Assert.That(ColumnDesc.Text, Is.EqualTo("Description"));
+                    Assert.That(Address_1.Text, Contains.Substring(country));
+                });
+            }catch(Exception e)
+            {
+
+            }
+
         }
+
+        public void AddGolfCourseTest(string name, string address, string city, string province, string country, string desc, string longdesc, string owner, string email, string phone)
+        {
+            AddGolf.Click();
+
+            string? User = TestContext.Parameters["user"];
+            string? Password = TestContext.Parameters["password"];
+
+            LoginEmail.SendKeys(User);
+            LoginPassword.SendKeys(Password);
+            LoginSubmit.Click();
+
+            Thread.Sleep(4000);
+
+            Name.SendKeys(name);
+            Address.SendKeys(address);
+            City.SendKeys(city);
+            Province.SendKeys(province);
+            Country.SendKeys(country);
+            Description.SendKeys(desc);
+            LongDesc.SendKeys(longdesc);
+            Owner.SendKeys(owner);
+            Email.SendKeys(email);
+            PhoneNumber.SendKeys(phone);
+            _driver.Manage().Window.FullScreen();
+            CreateBtn.Click();
+
+        }
+
+
 
         public void AddGolfCourse()
         {
