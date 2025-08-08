@@ -9,7 +9,6 @@ namespace TestProject.Pages
     {
         private IWebDriver _driver;
 
-
         private IWebElement SearchTxt => _driver.FindElement(By.Name("SearchString"));
 
         private IWebElement SearchBtn => _driver.FindElement(By.XPath("/html/body/div/main/table[1]/tbody/tr/td[1]/form/button"));
@@ -19,7 +18,7 @@ namespace TestProject.Pages
         private IWebElement ColumnAddress => _driver.FindElement(By.XPath("/html/body/div/main/table[2]/thead/tr/th[2]"));
 
         private IWebElement ColumnDesc => _driver.FindElement(By.XPath("/html/body/div/main/table[2]/thead/tr/th[3]"));
-        
+
         private IWebElement ColumnName_1 => _driver.FindElement(By.XPath("/html/body/div/main/table[2]/tbody/tr/td[1]"));
 
         private IWebElement ColumnContent => _driver.FindElement(By.XPath("/html/body/div/main/table[2]/tbody/tr"));
@@ -33,7 +32,7 @@ namespace TestProject.Pages
         private IWebElement AddGolf => _driver.FindElement(By.XPath("/html/body/div/main/table[1]/tbody/tr/td[5]/form/button"));
 
         private IWebElement Name => _driver.FindElement(By.Id("Name"));
-        
+
         private IWebElement Address => _driver.FindElement(By.Id("Address"));
 
         private IWebElement City => _driver.FindElement(By.Id("City"));
@@ -52,7 +51,7 @@ namespace TestProject.Pages
 
         private IWebElement PhoneNumber => _driver.FindElement(By.Id("PhoneNumber"));
 
-        private IWebElement CreateBtn => _driver.FindElement(By.XPath("/html/body/div/main/div[1]/div--/form/div[14]/input")); 
+        private IWebElement CreateBtn => _driver.FindElement(By.XPath("/html/body/div/main/div[1]/div--/form/div[14]/input"));
 
         private IWebElement LoginEmail => _driver.FindElement(By.Id("Input_Email"));
 
@@ -74,27 +73,24 @@ namespace TestProject.Pages
         {
             _driver = driver;
         }
-  
+
 
         public void Search(string searchStr)
         {
-            string moduleName = "Search_Golf_Search";
-            ReportHelper.InitializeReport(moduleName);
-            ReportHelper.test.Info(moduleName);
 
             try
             {
                 SearchTxt.Clear();
                 SearchTxt.SendKeys(searchStr);
-                
+
                 SearchBtn.Click();
                 ReportHelper.LogPass("Successfully searched for a golf course.");
-            
 
-            }catch(NoSuchElementException e)
+            }
+            catch (NoSuchElementException e)
             {
                 ReportHelper.LogFail("Search failed:" + e.Message);
-                TakeScreenshot(moduleName);
+                TakeScreenshot("Golf");
                 ReportHelper.AddScreenShot(ReportHelper.ScreenshotPath);
                 ReportHelper.FinalizeReport();
 
@@ -109,12 +105,13 @@ namespace TestProject.Pages
                     Assert.That(ColumnDesc.Text, Is.EqualTo("Description"));
                     Assert.That(ColumnContent.Displayed, Is.True);
                     ReportHelper.LogPass("Validate Golf Table");
-                
+
                 });
-            }catch(Exception e)
+            }
+            catch (Exception e)
             {
                 ReportHelper.LogFail("Validate Golf table");
-                TakeScreenshot(moduleName);
+                TakeScreenshot("Golf");
                 ReportHelper.AddScreenShot(ReportHelper.ScreenshotPath);
                 ReportHelper.FinalizeReport();
             }
@@ -126,30 +123,17 @@ namespace TestProject.Pages
             var select = new SelectElement(selectElement);
 
 
-            try
-            {   
-                select.SelectByText(country);
-                FilterBtn.Click();
-                ReportHelper.LogPass("Successfully selected a country.");
+            select.SelectByText(country);
+            FilterBtn.Click();
+           
 
-            }catch(Exception e)
+            Assert.Multiple(() =>
             {
-
-            }
-            try
-            {
-                Assert.Multiple(() =>
-                {
-                    Assert.That(ColumnName.Text, Is.EqualTo("Name ^"));
-                    Assert.That(ColumnAddress.Text, Is.EqualTo("Address"));
-                    Assert.That(ColumnDesc.Text, Is.EqualTo("Description"));
-                    Assert.That(Address_1.Text, Contains.Substring(country));
-                });
-            }catch(Exception e)
-            {
-
-            }
-
+                Assert.That(ColumnName.Text, Is.EqualTo("Name ^"));
+                Assert.That(ColumnAddress.Text, Is.EqualTo("Address"));
+                Assert.That(ColumnDesc.Text, Is.EqualTo("Description"));
+                Assert.That(Address_1.Text, Contains.Substring(country));
+            });         
         }
 
         public void AddGolfCourseTest(string name, string address, string city, string province, string country, string desc, string longdesc, string owner, string email, string phone)
@@ -184,7 +168,8 @@ namespace TestProject.Pages
 
         public void AddGolfCourse()
         {
-            AddGolf.Click();
+
+            LoginLink.Click();
 
             string? User = TestContext.Parameters["user"];
             string? Password = TestContext.Parameters["password"];
@@ -193,7 +178,10 @@ namespace TestProject.Pages
             LoginPassword.SendKeys(Password);  
             LoginSubmit.Click();
 
+            _driver.Navigate().GoToUrl(TestContext.Parameters["golf_url"]);
             Thread.Sleep(4000);
+
+            AddGolf.Click();
 
             Name.SendKeys("Testing GolF Course A");
             Address.SendKeys("1200 AVE NW");

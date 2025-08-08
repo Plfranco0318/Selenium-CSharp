@@ -11,6 +11,7 @@ namespace TestProject
     {
         private IWebDriver _driver;
         private LoginPage _loginPage;
+
         private string _loginUrl;
         private string _validUser;
         private string _validPassword;
@@ -18,7 +19,7 @@ namespace TestProject
         [OneTimeSetUp]
         public void ReportInit()
         {
-            ReportHelper.InitializeReport("LoginTestReport");
+            ReportHelper.InitializeReport("LoginTest");
         }
       
         
@@ -40,21 +41,35 @@ namespace TestProject
             ReportHelper.CreateTest("Valid Login");
             _driver.Navigate().GoToUrl(_loginUrl);
             _loginPage.ValidLogin(_validUser, _validPassword);
-            
-
         }
 
         [Test]
-        public void LoginError()
+        public void IncorrectPassword()
         {
-            ReportHelper.CreateTest("Invalid Login");
+            ReportHelper.CreateTest("Invalid Login: Incorrect Password");
             _driver.Navigate().GoToUrl(_loginUrl);
-            _loginPage.InvalidLogin("test@mail.com","123456789");
+            _loginPage.InvalidLogin("test2@mail.com", "123456789");
+        }
+
+
+        [Test]
+        public void IncorrectUsername()
+        {
+            ReportHelper.CreateTest("Invalid Login: Incorrect Username");
+            _driver.Navigate().GoToUrl(_loginUrl);
+            _loginPage.InvalidLogin("error@admlucid.com", _validPassword);
+        }
+
+
+        [Test]
+        public void EmptyLogin()
+        {
+            ReportHelper.CreateTest("Invalid Login: Empty input fields");
+            _driver.Navigate().GoToUrl(_loginUrl);
+            _loginPage.InvalidLogin("", "");
 
         }
       
-
-
         [TearDown]
         public void TearDown()
         {

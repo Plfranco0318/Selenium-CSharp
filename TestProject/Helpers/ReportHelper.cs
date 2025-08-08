@@ -1,5 +1,7 @@
 ﻿using AventStack.ExtentReports;
+using AventStack.ExtentReports.Model;
 using AventStack.ExtentReports.Reporter;
+using OpenQA.Selenium.BiDi.Script;
 
 
 namespace TestProject.Helpers
@@ -11,12 +13,16 @@ namespace TestProject.Helpers
         public static string ScreenshotPath { get; private set; }
         public static string ReportPath { get; private set; }
 
+        public static string BaseName { get; private set;  }
+
         public static void InitializeReport(string testName)
         {
             string timestamp = DateTime.Now.ToString("_MMddyyyy_hhmmt");
 
-            ScreenshotPath = $@"C:\Users\Paul Franco II\source\repos\TestProject\TestProject\Screenshots\{testName}{timestamp}.png";
-            ReportPath = $@"C:\Users\Paul Franco II\source\repos\TestProject\TestProject\Reports\{testName}{timestamp}.html";
+
+            BaseName = $"{testName}{timestamp}";
+            ScreenshotPath = $@"C:\Users\Paul Franco II\source\repos\TestProject\TestProject\Screenshots\{BaseName}.png";
+            ReportPath = $@"C:\Users\Paul Franco II\source\repos\TestProject\TestProject\Reports\{BaseName}.html";
 
 
             var spark = new ExtentSparkReporter(ReportPath);
