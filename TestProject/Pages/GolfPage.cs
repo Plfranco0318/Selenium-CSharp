@@ -265,7 +265,8 @@ namespace TestProject.Pages
                 string filename = @"C:\Users\Paul Franco II\source\repos\TestProject\TestProject\Screenshots\" + screenshotname + DateTime.Now.ToString("_MMddyyyy_hhmmt") + ".png";
                 ts.GetScreenshot().SaveAsFile(filename);
                 Console.WriteLine(filename);
-            }catch(InvalidCastException e) { Console.WriteLine("Screesnhot" + e.ToString()); }
+            }
+            catch (InvalidCastException e) { Console.WriteLine("Screesnhot" + e.ToString()); }
 
         }
 

@@ -1,7 +1,5 @@
 ﻿using AventStack.ExtentReports;
 using AventStack.ExtentReports.Reporter;
-using System;
-using System.Security.Policy;
 
 
 namespace TestProject.Helpers
@@ -28,6 +26,12 @@ namespace TestProject.Helpers
             test = extent.CreateTest($"{testName} Test Suite");
             test.Info($"Initialized reporting for {testName}");
         }
+
+        public static void CreateTest(string testName)
+        {
+            test = extent.CreateTest(testName);
+        }
+
 
         public static void LogPass(string message)
         {

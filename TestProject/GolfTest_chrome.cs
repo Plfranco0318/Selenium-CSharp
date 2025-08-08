@@ -22,33 +22,33 @@ namespace TestProject
 
         }
 
-        //public static List<TestCaseData> TestCases
-        //{
-        //    get
-        //    {
-        //        var testCases = new List<TestCaseData>();
+        public static List<TestCaseData> CountryTestCases
+        {
+            get
+            {
+                var testCases = new List<TestCaseData>();
 
 
-        //        using (var sr = new StreamReader(@"C:\Users\Paul Franco II\source\repos\TestProject\TestProject\Data\countries.csv"))
-        //        {
-        //            string line;
+                using (var sr = new StreamReader(@"C:\Users\Paul Franco II\source\repos\TestProject\TestProject\Data\countries.csv"))
+                {
+                    string line;
 
 
-        //            while ((line = sr.ReadLine()) != null)
-        //            {
-        //                if (string.IsNullOrWhiteSpace(line))
-        //                    continue; 
+                    while ((line = sr.ReadLine()) != null)
+                    {
+                        if (string.IsNullOrWhiteSpace(line))
+                            continue;
 
-        //                var testCase = new TestCaseData(line.Trim());
-        //                testCases.Add(testCase);
-        //            }
-        //        }
+                        var testCase = new TestCaseData(line.Trim());
+                        testCases.Add(testCase);
+                    }
+                }
 
-        //        return testCases;
-        //    }
-        //}
+                return testCases;
+            }
+        }
 
-        public static List<TestCaseData> TestCases
+        public static List<TestCaseData> GolfTestCases
         {
             get
             {
@@ -77,23 +77,6 @@ namespace TestProject
         }
 
 
-
-        [Test]
-        public void SearchTest()
-        {
-            _driver.Navigate().GoToUrl(TestContext.Parameters["golf_url"]);
-            GolfPage g = new GolfPage(_driver);
-
-            try
-            {
-                g.Search("Sky Golf Course");
-            }catch (NoSuchElementException e)
-            {
-                g.TakeScreenshot("golf");
-            }
-
-        }
-
         [TestCase("Sky Golf Course")]
         [TestCase("Tiger Golf")]
         [TestCase("Tiger B")]
@@ -106,13 +89,13 @@ namespace TestProject
             try
             {
                 g.Search(name);
-            }catch(NoSuchElementException e)
+            }catch(NoSuchElementException)
             {
                 g.TakeScreenshot("gold");
             }
         }
 
-        [TestCaseSource("TestCases")]
+        [TestCaseSource("CountryTestCases")]
         [Test]
         public void SelectTestCases(string country)
         {
@@ -121,14 +104,32 @@ namespace TestProject
             try { g.Select(country); } catch (NoSuchElementException e) { Console.WriteLine(e); }
         }
 
-        [TestCaseSource("TestCases")]
+        [TestCaseSource("GolfTestCases")]
         [Test]
-        public void AddGolfTestCases(string a, string b, string c, string d, string e, string f, string i, string h, string l, string m)
+        public void AddGolfTestCases(string name, string address, string city, string province, string country,
+                              string desc, string longdesc, string owner, string email, string phone)
         {
             _driver.Navigate().GoToUrl(TestContext.Parameters["golf_url"]);
             GolfPage g = new GolfPage(_driver);
 
-            g.AddGolfCourseTest(a, b, c, d, e, f, i, h, l, m);
+            g.AddGolfCourseTest(name, address, city, province, country, desc, longdesc, owner, email, phone);
+        }
+
+        [Test]
+        public void SearchTest()
+        {
+            _driver.Navigate().GoToUrl(TestContext.Parameters["golf_url"]);
+            GolfPage g = new GolfPage(_driver);
+
+            try
+            {
+                g.Search("Sky Golf Course");
+            }
+            catch (NoSuchElementException)
+            {
+                g.TakeScreenshot("golf");
+            }
+
         }
 
 
