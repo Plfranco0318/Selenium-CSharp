@@ -25,8 +25,8 @@ namespace TestProject
         public void Setup()
         {
             _driver = new ChromeDriver();
-            _driver.Manage().Window.Maximize();
             _bookingPage = new BookingPage(_driver);
+            _driver.Manage().Window.Maximize();
         }
 
         [Test]

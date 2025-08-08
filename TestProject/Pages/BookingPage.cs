@@ -26,7 +26,7 @@ namespace PageObjectModel.Source.Pages
 
         private IWebElement EndTimeTxt => _driver.FindElement(By.Id("EndTime"));
 
-        private IWebElement CreateBtn => _driver.FindElement(By.XPath("/html/body/div/main/div[1]/div/form/div[8]/input/"));
+        private IWebElement CreateBtn => _driver.FindElement(By.XPath("//form//input[@type='submit' or @value='Create']")); 
 
         public BookingPage(IWebDriver driver)
         {
@@ -40,8 +40,6 @@ namespace PageObjectModel.Source.Pages
             try
             {
                 _driver.Navigate().GoToUrl(TestContext.Parameters["golf_url"]);
-
-                Assert.That(CreateBtn.Displayed, Is.True);
                 ReportHelper.LogPass("Successfully navigated to the Booking Page");
 
             }
@@ -50,10 +48,75 @@ namespace PageObjectModel.Source.Pages
                 ReportHelper.LogFail("Failed to navigate to Booking Page:" + e.Message);
                 TakeScreenshot();
                 ReportHelper.AddScreenShot(ReportHelper.ScreenshotPath);
-                Assert.Fail("Failed");
+                throw;
+            }
 
+            try
+            {
+                BookingBtn.Click();
+                ReportHelper.LogPass("Successfully navigated to the Booking Details");
 
             }
+            catch (Exception e)
+            {
+                ReportHelper.LogFail("Failed to Click Booking Button");
+                TakeScreenshot();
+                ReportHelper.AddScreenShot(ReportHelper.ScreenshotPath);
+                throw;
+            }
+
+
+            try
+            {
+                var selectElement = GolfNameSelect;
+                var selectGolfName = new SelectElement(selectElement);
+                selectGolfName.SelectByText("Tiger A");
+                ReportHelper.LogPass("Successfully selected a golf name");
+            }
+
+            catch (Exception e)
+            {
+                ReportHelper.LogFail("Failed to select golf name");
+                TakeScreenshot();
+                ReportHelper.AddScreenShot(ReportHelper.ScreenshotPath);
+                throw;
+            }
+
+            try
+            {
+                CustomerTxt.SendKeys("John Smith");
+                EmailTxt.SendKeys("john@mail.com");
+                PhoneTxt.SendKeys("09266663456");
+                DateTxt.SendKeys("2024" + Keys.ArrowRight + "03" + Keys.ArrowRight + "18");
+                StartTimeTxt.SendKeys("08:30AM");
+                EndTimeTxt.SendKeys("09:30AM");
+                ReportHelper.LogPass("Successfully entered data to the Booking Details");
+            }
+
+            catch (Exception e)
+            {
+                ReportHelper.LogFail("Failed to enter booking details");
+                TakeScreenshot();
+                ReportHelper.AddScreenShot(ReportHelper.ScreenshotPath);
+                throw;
+            }
+
+            try
+            {   
+               
+                CreateBtn.Click();
+                ReportHelper.LogPass("New booking is added successfully");
+            }
+
+            catch (Exception e)
+            {
+                ReportHelper.LogFail(e.Message);
+                TakeScreenshot();
+                ReportHelper.AddScreenShot(ReportHelper.ScreenshotPath);
+                throw;
+            }
+
+
         }
         public void TakeScreenshot()
         {
@@ -75,24 +138,5 @@ namespace PageObjectModel.Source.Pages
 
 
 
-//_driver.Navigate().GoToUrl(TestContext.Parameters["golf_url"]);
-//ReportHelper.LogPass("Successfully navigated to the Booking Page");
-
-//BookingBtn.Click();
-//ReportHelper.LogPass("Successfully navigated to the Booking Details");
-
-//var selectElement = GolfNameSelect;
-//var selectGolfName = new SelectElement(selectElement);
-//selectGolfName.SelectByText("Tiger sss");
 
 
-//CustomerTxt.SendKeys("John Smith");
-//EmailTxt.SendKeys("john@mail.com");
-//PhoneTxt.SendKeys("09266663456");
-//DateTxt.SendKeys("2024" + Keys.ArrowRight + "03" + Keys.ArrowRight + "18");
-//StartTimeTxt.SendKeys("08:30AM");
-//EndTimeTxt.SendKeys("09:30AM");
-//ReportHelper.LogPass("Successfully entered data to the Booking Details");
-
-//CreateBtn.Click();
-//ReportHelper.LogPass("Successfully added the new booking");
