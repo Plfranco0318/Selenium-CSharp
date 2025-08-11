@@ -27,11 +27,13 @@ namespace TestProject
             _driver = new ChromeDriver();
             _bookingPage = new BookingPage(_driver);
             _driver.Manage().Window.Maximize();
+            _driver.Manage().Window.Maximize();
         }
 
         [Test]
         public void Booking()
-        {   
+        {
+            ReportHelper.CreateTest("Booking Functionality");
             _bookingPage.Booking();
         }
 

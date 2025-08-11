@@ -90,10 +90,9 @@ namespace TestProject.Pages
             catch (NoSuchElementException e)
             {
                 ReportHelper.LogFail("Search failed:" + e.Message);
-                TakeScreenshot("Golf");
+                TakeScreenshot();
                 ReportHelper.AddScreenShot(ReportHelper.ScreenshotPath);
-                ReportHelper.FinalizeReport();
-
+                throw;
             }
 
             try
@@ -104,16 +103,16 @@ namespace TestProject.Pages
                     Assert.That(ColumnAddress.Text, Is.EqualTo("Address"));
                     Assert.That(ColumnDesc.Text, Is.EqualTo("Description"));
                     Assert.That(ColumnContent.Displayed, Is.True);
-                    ReportHelper.LogPass("Validate Golf Table");
+                    ReportHelper.LogPass("Validated Golf Table");
 
                 });
             }
             catch (Exception e)
             {
-                ReportHelper.LogFail("Validate Golf table");
-                TakeScreenshot("Golf");
+                ReportHelper.LogFail("Validating the Golf Table failed");
+                TakeScreenshot();
                 ReportHelper.AddScreenShot(ReportHelper.ScreenshotPath);
-                ReportHelper.FinalizeReport();
+                throw;
             }
         }
 
@@ -122,137 +121,329 @@ namespace TestProject.Pages
             var selectElement = SelectCountry;
             var select = new SelectElement(selectElement);
 
-
-            select.SelectByText(country);
-            FilterBtn.Click();
-           
-
-            Assert.Multiple(() =>
+            try
             {
-                Assert.That(ColumnName.Text, Is.EqualTo("Name ^"));
-                Assert.That(ColumnAddress.Text, Is.EqualTo("Address"));
-                Assert.That(ColumnDesc.Text, Is.EqualTo("Description"));
-                Assert.That(Address_1.Text, Contains.Substring(country));
-            });         
+                select.SelectByText(country);
+                FilterBtn.Click();
+                ReportHelper.LogPass("Successfully selected a country in the dropdown.");
+            }
+
+            catch (Exception e)
+            {
+                ReportHelper.LogFail("Selecting a country in the dropdown failed:" + e.Message);
+                TakeScreenshot();
+                ReportHelper.AddScreenShot(ReportHelper.ScreenshotPath);
+                throw;
+            }
+
+            try
+            {
+                Assert.Multiple(() =>
+                {
+                    Assert.That(ColumnName.Text, Is.EqualTo("Name ^"));
+                    Assert.That(ColumnAddress.Text, Is.EqualTo("Address"));
+                    Assert.That(ColumnDesc.Text, Is.EqualTo("Description"));
+                    Assert.That(Address_1.Text, Contains.Substring(country));
+                });
+
+                ReportHelper.LogPass("Assertion Passed");
+                
+
+            }
+            catch (Exception e)
+            {
+                ReportHelper.LogFail("Assertion Failed:" + e.Message);
+                TakeScreenshot();
+                ReportHelper.AddScreenShot(ReportHelper.ScreenshotPath);
+                throw;
+            }
+       
         }
 
-        public void AddGolfCourseTest(string name, string address, string city, string province, string country, string desc, string longdesc, string owner, string email, string phone)
-        {
-            AddGolf.Click();
+        //public void AddGolfCourseTest(string name, string address, string city, string province, string country, string desc, string longdesc, string owner, string email, string phone)
+        //{
+        //    AddGolf.Click();
 
-            string? User = TestContext.Parameters["user"];
-            string? Password = TestContext.Parameters["password"];
+        //    string? User = TestContext.Parameters["user"];
+        //    string? Password = TestContext.Parameters["password"];
 
-            LoginEmail.SendKeys(User);
-            LoginPassword.SendKeys(Password);
-            LoginSubmit.Click();
+        //    LoginEmail.SendKeys(User);
+        //    LoginPassword.SendKeys(Password);
+        //    LoginSubmit.Click();
 
-            Thread.Sleep(4000);
+        //    Thread.Sleep(4000);
 
-            Name.SendKeys(name);
-            Address.SendKeys(address);
-            City.SendKeys(city);
-            Province.SendKeys(province);
-            Country.SendKeys(country);
-            Description.SendKeys(desc);
-            LongDesc.SendKeys(longdesc);
-            Owner.SendKeys(owner);
-            Email.SendKeys(email);
-            PhoneNumber.SendKeys(phone);
-            _driver.Manage().Window.FullScreen();
-            CreateBtn.Click();
+        //    Name.SendKeys(name);
+        //    Address.SendKeys(address);
+        //    City.SendKeys(city);
+        //    Province.SendKeys(province);
+        //    Country.SendKeys(country);
+        //    Description.SendKeys(desc);
+        //    LongDesc.SendKeys(longdesc);
+        //    Owner.SendKeys(owner);
+        //    Email.SendKeys(email);
+        //    PhoneNumber.SendKeys(phone);
+        //    _driver.Manage().Window.FullScreen();
+        //    CreateBtn.Click();
 
-        }
+        //}
 
 
 
         public void AddGolfCourse()
         {
+            try
+            {
+                LoginLink.Click();
+                ReportHelper.LogPass("Successfully navigated to the Login Page");
+            }
+            catch(Exception e)
+            {
+                ReportHelper.LogFail("Navigating to the Login Page Failed:" + e.Message);
+                TakeScreenshot();
+                ReportHelper.AddScreenShot(ReportHelper.ScreenshotPath);
+                throw;
+            }
 
-            LoginLink.Click();
+            try
+            {
+                string? User = TestContext.Parameters["user"];
+                string? Password = TestContext.Parameters["password"];
 
-            string? User = TestContext.Parameters["user"];
-            string? Password = TestContext.Parameters["password"];
+                LoginEmail.SendKeys(User);
+                LoginPassword.SendKeys(Password);
+                LoginSubmit.Click();
+                ReportHelper.LogPass("Succefully Logged in");
 
-            LoginEmail.SendKeys(User);
-            LoginPassword.SendKeys(Password);  
-            LoginSubmit.Click();
+            }
+            catch(Exception e)
+            {
+                ReportHelper.LogFail("Login Failed:" + e.Message);
+                TakeScreenshot();
+                ReportHelper.AddScreenShot(ReportHelper.ScreenshotPath);
+                throw;
+            }
 
-            _driver.Navigate().GoToUrl(TestContext.Parameters["golf_url"]);
-            Thread.Sleep(4000);
+            try
+            {
+                Thread.Sleep(4000);
+                _driver.Navigate().GoToUrl(TestContext.Parameters["golf_url"]);
+                AddGolf.Click();
+                ReportHelper.LogPass("Successfully navigated to the Add golf page");
 
-            AddGolf.Click();
+            }
+            catch (Exception e)
+            {
+                ReportHelper.LogFail("Link not found:" + e.Message);
+                TakeScreenshot();
+                ReportHelper.AddScreenShot(ReportHelper.ScreenshotPath);
+                throw;
+            }
 
-            Name.SendKeys("Testing GolF Course A");
-            Address.SendKeys("1200 AVE NW");
-            City.SendKeys("Edmonton");
-            Province.SendKeys("AB");
-            Country.SendKeys("Canada");
-            Description.SendKeys("It's a nice golf course.");
-            LongDesc.SendKeys("It's located in NW Edmonton. Its country style and full services.");
-            Owner.SendKeys("Daniel Longbottom");
-            Email.SendKeys("test2@admlucid.com");
-            PhoneNumber.SendKeys("09266663456");
-            _driver.Manage().Window.FullScreen();
-            CreateBtn.Click();
+
+            try
+            {
+                Name.SendKeys("Testing GolF Course A");
+                Address.SendKeys("1200 AVE NW");
+                City.SendKeys("Edmonton");
+                Province.SendKeys("AB");
+                Country.SendKeys("Canada");
+                Description.SendKeys("It's a nice golf course.");
+                LongDesc.SendKeys("It's located in NW Edmonton. Its country style and full services.");
+                Owner.SendKeys("Daniel Longbottom");
+                Email.SendKeys("test2@admlucid.com");
+                PhoneNumber.SendKeys("09266663456");
+                _driver.Manage().Window.FullScreen();
+                CreateBtn.Click();
+
+                ReportHelper.LogPass("Golf details successfully added");
+
+            } 
+            catch (Exception e)
+            {
+                ReportHelper.LogFail("Adding of Golf details failed:" + e.Message);
+                TakeScreenshot();
+                ReportHelper.AddScreenShot(ReportHelper.ScreenshotPath);
+                throw;
+            }
+
 
         }
 
         public void EditGolfCourse()
         {
-            LoginLink.Click();
+            try
+            {
+                LoginLink.Click();
+                ReportHelper.LogPass("Successfully navigated to the Login Page");
 
-            string? User = TestContext.Parameters["user"];
-            string? Password = TestContext.Parameters["password"];
+            }catch (Exception e)
+            {
+                ReportHelper.LogFail("Navigating to the Login Page failed:" + e.Message);
+                TakeScreenshot();
+                ReportHelper.AddScreenShot(ReportHelper.ScreenshotPath);
+                throw;
+            }
+            try
+            {
+                string? User = TestContext.Parameters["user"];
+                string? Password = TestContext.Parameters["password"];
 
-            LoginEmail.SendKeys(User);
-            LoginPassword.SendKeys(Password);
-            LoginSubmit.Click();
+                LoginEmail.SendKeys(User);
+                LoginPassword.SendKeys(Password);
+                LoginSubmit.Click();
+                Thread.Sleep(4000);
+                ReportHelper.LogPass("Successfully Logged in");
+            }
+            catch (Exception e)
+            {
+                ReportHelper.LogFail("Login Failed:" + e.Message);
+                TakeScreenshot();
+                ReportHelper.AddScreenShot(ReportHelper.ScreenshotPath);
+                throw;
+            }
 
-            Thread.Sleep(4000);
 
-            _driver.Navigate().GoToUrl(TestContext.Parameters["golf_url"]);
-            Thread.Sleep(2000);
+            try
+            {
+                _driver.Navigate().GoToUrl(TestContext.Parameters["golf_url"]);
+                Thread.Sleep(2000);
+                ReportHelper.LogPass("Successfully navigated to the Golf Page");
+            }
+            
+            catch (Exception e)
+            {
+                ReportHelper.LogFail("Navigating to the Golf Page failed:" + e.Message);
+                TakeScreenshot();
+                ReportHelper.AddScreenShot(ReportHelper.ScreenshotPath);
+                throw;
+            }
 
-            SearchTxt.SendKeys("Testing Golf Course A");
-            SearchBtn.Click();
+            try
+            {
+                SearchTxt.SendKeys("Testing Golf Course A");
+                SearchBtn.Click();
+                ReportHelper.LogPass("Search input successfully entered");
+            }
 
-            EditLink.Click();
-            Owner.Clear(); Owner.SendKeys("Johnny Batongbakal"); EditSaveBtn.Click();
+            catch (Exception e)
+            {
+                ReportHelper.LogFail("Entering of the search item failed:" + e.Message);
+                TakeScreenshot();
+                ReportHelper.AddScreenShot(ReportHelper.ScreenshotPath);
+                throw;
+            }
+
+            try
+            {
+                EditLink.Click();
+                Owner.Clear(); Owner.SendKeys("Johnny Batongbakal");
+                Email.Clear(); Owner.SendKeys("johnny@mail.com");
+                EditSaveBtn.Click();
+                ReportHelper.LogPass("User's name and Email have been edited successfully.");
+            }
+
+            catch(Exception e)
+            {
+                ReportHelper.LogFail("Editing name and email failed");
+                TakeScreenshot();
+                ReportHelper.AddScreenShot(ReportHelper.ScreenshotPath);
+                throw;
+            }
+
         }
 
 
         public void DeleteGolfCourse()
         {
-            LoginLink.Click();
+            try
+            {
+                LoginLink.Click();
+                ReportHelper.LogPass("Successfully navigated to the Login Page");
+            }
+            catch (Exception e)
+            {
+                ReportHelper.LogFail("Navigation to the login page failed:" + e.Message);
+                TakeScreenshot();
+                ReportHelper.AddScreenShot(ReportHelper.ScreenshotPath);
+                throw;
+            }
 
-            string? User = TestContext.Parameters["user"];
-            string? Password = TestContext.Parameters["password"];
+            try
+            {
 
-            LoginEmail.SendKeys(User); 
-            LoginPassword.SendKeys(Password); 
-            LoginSubmit.Click();
+                string? User = TestContext.Parameters["user"];
+                string? Password = TestContext.Parameters["password"];
 
-            Thread.Sleep(4000);
+                LoginEmail.SendKeys(User);
+                LoginPassword.SendKeys(Password);
+                LoginSubmit.Click();
 
-            _driver.Navigate().GoToUrl(TestContext.Parameters["golf_url"]); 
-            Thread.Sleep(2000);
-            SearchTxt.SendKeys("Testing Golf Course A"); 
-            SearchBtn.Click();
+                Thread.Sleep(4000);
+                ReportHelper.LogPass("Successfully logged in");
+            }
+
+            catch(Exception e)
+            {
+                ReportHelper.LogFail("Login failed:" + e.Message);
+                TakeScreenshot();
+                ReportHelper.AddScreenShot(ReportHelper.ScreenshotPath);
+                throw;
+            }
+            try
+            {
+                _driver.Navigate().GoToUrl(TestContext.Parameters["golf_url"]);
+                Thread.Sleep(2000);
+                ReportHelper.LogPass("Successfully navigated to the Golf page");
+            }
+            catch(Exception e)
+            {
+                ReportHelper.LogFail("Navigating to the Golf Page failed:" + e.Message);
+                TakeScreenshot();
+                ReportHelper.AddScreenShot(ReportHelper.ScreenshotPath);
+                throw;
+            }
+            try
+            {
+                SearchTxt.SendKeys("Testing Golf Course A");
+                SearchBtn.Click();
+                ReportHelper.LogPass("Search text is successfully selected.");
+            }
+
+            catch (Exception e)
+            {
+                ReportHelper.LogFail("Search item does not exist:" + e.Message);
+                TakeScreenshot();
+                ReportHelper.AddScreenShot(ReportHelper.ScreenshotPath);
+                throw;
+            }
+
+            try
+            {
+                DeleteLink.Click();
+                DeleteSaveBtn.Click();
+                Thread.Sleep(2000);
+                ReportHelper.LogPass("Golf Course successfully delete");
+            }
+
+            catch (Exception e)
+            {
+                ReportHelper.LogFail("Deleting of Golf Course failed");
+                TakeScreenshot();
+                ReportHelper.AddScreenShot(ReportHelper.ScreenshotPath);
+                throw;
+            }
            
-            DeleteLink.Click(); 
-            DeleteSaveBtn.Click(); 
-            Thread.Sleep(2000);
+
         }
 
-        public void TakeScreenshot(string screenshotname)
+        public void TakeScreenshot()
         {
             try
             {
                 ITakesScreenshot ts = (ITakesScreenshot)_driver;
-                string filename = @"C:\Users\Paul Franco II\source\repos\TestProject\TestProject\Screenshots\" + screenshotname + DateTime.Now.ToString("_MMddyyyy_hhmmt") + ".png";
+                string filename = @$"C:\Users\Paul Franco II\source\repos\TestProject\TestProject\Screenshots\{ReportHelper.BaseName}.png";
                 ts.GetScreenshot().SaveAsFile(filename);
-                Console.WriteLine(filename);
             }
             catch (InvalidCastException e) { Console.WriteLine("Screesnhot" + e.ToString()); }
 

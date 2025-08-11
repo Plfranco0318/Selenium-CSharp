@@ -26,9 +26,10 @@ namespace TestProject
         [SetUp]
         public void Setup()
         {
-            
+
             _driver = new ChromeDriver();
             _driver.Manage().Window.Maximize();
+
             _loginUrl = TestContext.Parameters["login_url"];
             _golfUrl = TestContext.Parameters["golf_url"];
             _golfPage = new GolfPage(_driver);
@@ -131,22 +132,15 @@ namespace TestProject
         [Test]
         public void SearchTest()
         {
+            ReportHelper.CreateTest("Search for a golf course");
             _driver.Navigate().GoToUrl(_golfUrl);
-
-            try
-            {
-                _golfPage.Search("Sky Golf Course");
-            }
-            catch (NoSuchElementException)
-            {
-                _golfPage.TakeScreenshot("golf");
-            }
-
+            _golfPage.Search("Sky Golf Course");
         }
 
         [Test]
         public void SelectTest()
         {
+            ReportHelper.CreateTest("Select from the dropdown");
             _driver.Navigate().GoToUrl(_golfUrl);
             _golfPage.Select("Sweden");
         }
@@ -155,20 +149,23 @@ namespace TestProject
         [Test]
         public void AddGolfTest()
         {
+            ReportHelper.CreateTest("Add a golf course");
             _driver.Navigate().GoToUrl(_golfUrl);
             _golfPage.AddGolfCourse();
         }
 
         [Test]
-        public void EditGolfTest() 
+        public void EditGolfTest()
         {
-            _driver.Navigate().GoToUrl(_golfUrl); 
+            ReportHelper.CreateTest("Editing a golf course information");
+            _driver.Navigate().GoToUrl(_golfUrl);
             _golfPage.EditGolfCourse();
         }
 
         [Test]
         public void RemoveGolfTest()
         {
+            ReportHelper.CreateTest("Delete an existing Golf Course");
             _driver.Navigate().GoToUrl(_golfUrl);
             _golfPage.DeleteGolfCourse();
         }
@@ -180,7 +177,6 @@ namespace TestProject
             _driver?.Dispose();
             ReportHelper.FinalizeReport();
         }
-                 
-    }
 
+    }
 }
