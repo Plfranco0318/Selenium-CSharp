@@ -160,33 +160,35 @@ namespace TestProject.Pages
        
         }
 
-        //public void AddGolfCourseTest(string name, string address, string city, string province, string country, string desc, string longdesc, string owner, string email, string phone)
-        //{
-        //    AddGolf.Click();
+        //Data Driven Test
+        public void AddGolfCourseTest(string name, string address, string city, string province, string country, string desc, string longdesc, string owner, string email, string phone)
+        {
 
-        //    string? User = TestContext.Parameters["user"];
-        //    string? Password = TestContext.Parameters["password"];
+            AddGolf.Click();
 
-        //    LoginEmail.SendKeys(User);
-        //    LoginPassword.SendKeys(Password);
-        //    LoginSubmit.Click();
+            string? User = TestContext.Parameters["user"];
+            string? Password = TestContext.Parameters["password"];
 
-        //    Thread.Sleep(4000);
+            LoginEmail.SendKeys(User);
+            LoginPassword.SendKeys(Password);
+            LoginSubmit.Click();
 
-        //    Name.SendKeys(name);
-        //    Address.SendKeys(address);
-        //    City.SendKeys(city);
-        //    Province.SendKeys(province);
-        //    Country.SendKeys(country);
-        //    Description.SendKeys(desc);
-        //    LongDesc.SendKeys(longdesc);
-        //    Owner.SendKeys(owner);
-        //    Email.SendKeys(email);
-        //    PhoneNumber.SendKeys(phone);
-        //    _driver.Manage().Window.FullScreen();
-        //    CreateBtn.Click();
+            Thread.Sleep(4000);
 
-        //}
+            Name.SendKeys(name);
+            Address.SendKeys(address);
+            City.SendKeys(city);
+            Province.SendKeys(province);
+            Country.SendKeys(country);
+            Description.SendKeys(desc);
+            LongDesc.SendKeys(longdesc);
+            Owner.SendKeys(owner);
+            Email.SendKeys(email);
+            PhoneNumber.SendKeys(phone);
+            _driver.Manage().Window.FullScreen();
+            CreateBtn.Click();
+
+        }
 
 
 
@@ -428,7 +430,7 @@ namespace TestProject.Pages
 
             catch (Exception e)
             {
-                ReportHelper.LogFail("Deleting of Golf Course failed");
+                ReportHelper.LogFail("Deleting of Golf Course failed:" + e.Message);
                 TakeScreenshot();
                 ReportHelper.AddScreenShot(ReportHelper.ScreenshotPath);
                 throw;

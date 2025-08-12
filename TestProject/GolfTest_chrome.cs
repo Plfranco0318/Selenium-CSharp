@@ -62,52 +62,46 @@ namespace TestProject
         //    }
         //}
 
-        //public static List<TestCaseData> GolfTestCases
-        //{
-        //    get
-        //    {
-        //        var testCases = new List<TestCaseData>();
+        public static List<TestCaseData> GolfTestCases
+        {
+            get
+            {
+                var testCases = new List<TestCaseData>();
 
-        //        using (var fs = File.OpenRead(@"C:\Users\Paul Franco II\source\repos\TestProject\TestProject\Data\golf.csv"))
-        //        using (var sr = new StreamReader(fs))
-        //        {
-        //            string line = string.Empty;
-        //            while (line != null)
-        //            {
-        //                line = sr.ReadLine();
-        //                if (line != null)
-        //                {
-        //                    string[] golf = line.Split(new char[] { ',' },
-        //                        StringSplitOptions.None);
+                using (var fs = File.OpenRead(@"C:\Users\Paul Franco II\source\repos\TestProject\TestProject\Data\golf.csv"))
+                using (var sr = new StreamReader(fs))
+                {
+                    string line = string.Empty;
+                    while (line != null)
+                    {
+                        line = sr.ReadLine();
+                        if (line != null)
+                        {
+                            string[] golf = line.Split(new char[] { ',' },
+                                StringSplitOptions.None);
 
-        //                    var testCase = new TestCaseData(golf);
-        //                    testCases.Add(testCase);
-        //                }
-        //            }
-        //        }
+                            var testCase = new TestCaseData(golf);
+                            testCases.Add(testCase);
+                        }
+                    }
+                }
 
-        //        return testCases;
-        //    }
-        //}
+                return testCases;
+            }
+        }
 
 
-        //[TestCase("Sky Golf Course")]
-        //[TestCase("Tiger Golf")]
-        //[TestCase("Tiger B")]
+        [TestCase("Sky Golf Course")]
+        [TestCase("Tiger Golf")]
+        [TestCase("Tiger B")]
+        [TestCase("Dummy")]
 
-        //public void SearchTestCases(string name)
-        //{
-        //    _driver.Navigate().GoToUrl(TestContext.Parameters["golf_url"]);
-        //    GolfPage g = new GolfPage(_driver);
-
-        //    try
-        //    {
-        //        g.Search(name);
-        //    }catch(NoSuchElementException)
-        //    {
-        //        g.TakeScreenshot("gold");
-        //    }
-        //}
+        public void SearchTestCases(string name)
+        {
+            ReportHelper.CreateTest("Search for a golf course:" + name);
+            _driver.Navigate().GoToUrl(_golfUrl);
+            _golfPage.Search(name);
+        }
 
         //[TestCaseSource("CountryTestCases")]
         //[Test]
@@ -118,16 +112,15 @@ namespace TestProject
         //    try { g.Select(country); } catch (NoSuchElementException e) { Console.WriteLine(e); }
         //}
 
-        //[TestCaseSource("GolfTestCases")]
-        //[Test]
-        //public void AddGolfTestCases(string name, string address, string city, string province, string country,
-        //                      string desc, string longdesc, string owner, string email, string phone)
-        //{
-        //    _driver.Navigate().GoToUrl(TestContext.Parameters["golf_url"]);
-        //    GolfPage g = new GolfPage(_driver);
-
-        //    g.AddGolfCourseTest(name, address, city, province, country, desc, longdesc, owner, email, phone);
-        //}
+        [TestCaseSource("GolfTestCases")]
+        [Test]
+        public void AddGolfTestCases(string name, string address, string city, string province, string country,
+                              string desc, string longdesc, string owner, string email, string phone)
+        {
+            ReportHelper.CreateTest("Data Driven Test: Adding a golf course");
+            _driver.Navigate().GoToUrl(_golfUrl);
+            _golfPage.AddGolfCourseTest(name, address, city, province, country, desc, longdesc, owner, email, phone);
+        }
 
         [Test]
         public void SearchTest()
